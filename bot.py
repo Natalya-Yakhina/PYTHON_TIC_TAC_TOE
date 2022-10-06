@@ -1,7 +1,6 @@
 import logging
 from telegram import Bot, Dispatcher, executor, types
-from telegram.exe import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-
+from telegram.exe import Update, ReplyKeyboard, ReplyKeyboardRemove
 API_TOKEN = '5634198207:AAF4MbQmTsJxjvNAD_AvT2COJdtZkiq2OtM'
 
 # Configure logging
