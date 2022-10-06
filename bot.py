@@ -1,29 +1,31 @@
-from telegram import Update, Bot
-from telegram.ext import Updater, CommandHandler, MessageHandler
-from random import randint
+import logging
+from telegram import Bot, Dispatcher, executor, types
+from telegram.exe import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
-bot_token="5714512507:AAErkt395Nc_1-C0B8qRVOdWSKAlyVKSeJU"
-bot = Bot(bot_token)
-updater = Updater(bot_token, use_context=True)
-dispatcher = updater.dispatcher
-def start(update, context):
-    context.bot.send_message(update.effective_chat.id, "Привет!")
+API_TOKEN = '5634198207:AAF4MbQmTsJxjvNAD_AvT2COJdtZkiq2OtM'
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
-start_handler = CommandHandler('start', start)
-def info(update, context):
-    context.bot.send_message(update.effective_chat.id, "это бот")
-def roll(update, context):
-    context.bot.send_message(update.effective_chat.id, text=str(randint(1, 6)))
+# Initialize bot and dispatcher
+bot = Bot(token=API_TOKEN)
+dp = Dispatcher(bot)
 
 
-start_handler = CommandHandler('start', start)
-info_handler = CommandHandler('info', info)
-roll_handler = CommandHandler('roll', roll)
+@dp.message_handler(commands=['start'])
+async def start_command(message: types.Message):
+    await bot.send_message(message.chat.id, f'Привет {message.chat.first_name}!')
 
 
-dispatcher.add_handler(start_handler)
-dispatcher.add_handler(info_handler)
-dispatcher.add_handler(roll_handler)
-updater.start_polling()
-updater.idle()
+@dp.message_handler(commands=['help'])
+async def help_command(message: types.Message):
+    await bot.send_message(message.chat.id, f'Команда в разработке')
+
+
+@dp.message_handler()
+async def echo_message(message: types.Message):
+    await bot.send_message(message.from_user.id, message.text)
+
+if __name__ == '__main__':
+    executor.start_polling(dp)
+    
